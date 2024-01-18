@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://git.openembedded.org" name="oe"/>
+  <remote fetch="https://git.yoctoproject.org" name="yocto"/>
+  <remote fetch="https://github.com/iesy-gmbh" name="iesy"/>
+
+  <project name="meta-iesy-osm" remote="iesy" revision="kirkstone" path="sources/meta-iesy-osm"/>
+  <project name="meta-openembedded" remote="oe" revision="kirkstone" path="sources/meta-openembedded"/>
+  <project name="meta-ti" remote="yocto" revision="kirkstone" path="sources/meta-ti"/>
+  <project name="openembedded-core" remote="oe" revision="kirkstone" path="sources/oe-core"/>
+  <project name="poky" remote="yocto" revision="kirkstone" path="sources/poky"/>
+</manifest>
