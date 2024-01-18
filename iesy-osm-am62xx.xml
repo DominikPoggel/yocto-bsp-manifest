@@ -4,9 +4,11 @@
   <remote fetch="https://git.yoctoproject.org" name="yocto"/>
   <remote fetch="https://github.com/iesy-gmbh" name="iesy"/>
 
-  <project name="meta-iesy-osm" remote="iesy" revision="kirkstone" path="sources/meta-iesy-osm"/>
-  <project name="meta-openembedded" remote="oe" revision="kirkstone" path="sources/meta-openembedded"/>
-  <project name="meta-ti" remote="yocto" revision="kirkstone" path="sources/meta-ti"/>
-  <project name="openembedded-core" remote="oe" revision="kirkstone" path="sources/oe-core"/>
-  <project name="poky" remote="yocto" revision="kirkstone" path="sources/poky"/>
+  <project name="bitbake" remote="oe" revision="0c6f86b60cfba67c20733516957c0a654eb2b44c" path="sources/bitbake"/>
+  <project name="meta-arm" remote="yocto" revision="96aad3b29aa7a5ee4df5cf617a6336e5218fa9bd" path="sources/meta-arm"/>
+  <project name="meta-iesy-osm" remote="iesy" revision="537f13fd1f04b523fd2d1606f6f533b5c6f657eb" path="sources/meta-iesy-osm"/>
+  <project name="meta-openembedded" remote="oe" revision="730e44900a0a86265bad93a16b5a5ff344a07266" path="sources/meta-openembedded"/>
+  <project name="meta-ti" remote="yocto" revision="155218f03ee8222eeb02f11ea9bc41135cf28e38" path="sources/meta-ti"/>
+  <project name="openembedded-core" remote="oe" revision="8e27f96c0befbbb5cf8a2f7076b7a1ffd79addb6" path="sources/oe-core"/>
+  <project name="poky" remote="yocto" revision="a818202d85a2fba1be8f43e00391e44a2dbada7e" path="sources/poky"/>
 </manifest>
