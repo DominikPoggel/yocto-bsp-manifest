@@ -10,7 +10,7 @@
   <remote fetch="https://github.com/meta-rust" name="rust"/>
   <remote fetch="https://git.yoctoproject.org/git" name="yocto"/>
   
-  <project name="meta-browser" remote="browser" revision="kirkstone" path="sources/meta-browser"/>
+  <project name="meta-browser" remote="browser" revision="5099e669f9415b433fc3851b6c1f8118902b45b6" path="sources/meta-browser"/>
   <project name="meta-clang" remote="clang" revision="kirkstone" path="sources/meta-clang"/>
   <project name="meta-iesy-osm" remote="iesy" revision="kirkstone" path="sources/meta-iesy-osm"/>
   <project name="meta-rockchip" remote="JeffyCN" revision="96382531773a45934d6c52249fa006bb96e71e27" path="sources/meta-rockchip"/>
