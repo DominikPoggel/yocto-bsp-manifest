@@ -3,8 +3,7 @@ name: CI test
 on:
   workflow_run:
     workflows: ["CI"]
-    types:
-      - completed
+    types: [completed]
     
 permissions:
   contents: write
@@ -12,6 +11,12 @@ jobs:
   test_pr_sources:
     runs-on: self-hosted
     steps:
+      - name: Check success of CI workflow
+        run: |
+          if [ ${{ github.event.workflow_run.conclusion }} != "success" ]; then
+            echo "CI workflow failed"
+            exit 1
+          fi
       - name: get PR branch name from env.PR_NUMBER
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
