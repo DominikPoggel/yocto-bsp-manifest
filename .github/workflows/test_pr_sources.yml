@@ -23,9 +23,8 @@ jobs:
         run: |
           source pr.env
           PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
-          echo "::set-env name=PR_BRANCH::$PR_BRANCH"   
       - name: repo init # get branch name from PR env.PR_NUMBER
-        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ env.PR_BRANCH }} -m iesy-osm-imx8m.xml
+        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b $PR_BRANCH -m iesy-osm-imx8m.xml
       - name: repo sync
         run: repo sync
       - name: run docker
