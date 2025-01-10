@@ -33,6 +33,7 @@ jobs:
             - name: commit changes
               run: |
                 git branch -c ci-scarthgap-imx8mm
+                git checkout ci-scarthgap-imx8mm
                 git add iesy-osm-imx8m.xml
                 git commit -m "update sources"
                 git push
