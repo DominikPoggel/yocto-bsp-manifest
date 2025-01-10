@@ -25,9 +25,11 @@ jobs:
           source pr.env
           PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
       - name: repo init
-        env:
-          PR_BRANCH: ${{ steps.get_PR_branch.outputs.PR_BRANCH }}
-        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b $PR_BRANCH -m iesy-osm-imx8m.xml
+        # check who dispatched the workflow
+        run: |
+          if [ ${{ github.event_name }} == "workflow_run" ]; then
+            repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ci-scarthgap-imx8mm -m iesy-osm-imx8m.xml
+        # else: dispatch by PR
       - name: repo sync
         run: repo sync
       - name: run docker
