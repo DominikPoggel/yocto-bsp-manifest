@@ -1,0 +1,17 @@
+name: CI test
+
+on:
+  pull_request:
+    branches:
+      - scarthgap
+jobs:
+  test_pr_sources:
+    runs-on: self-hosted
+    steps:
+      - name: repo init
+        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ github.event.pull_request.headRefName }} -m iesy-osm-imx8m.xml
+      - name: repo sync
+        run: repo sync
+      - name: run docker
+        run: |
+          docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -it -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=iesy-imx8mm-eva-mi-v1 -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
