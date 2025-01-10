@@ -18,12 +18,6 @@ jobs:
             echo "CI workflow failed"
             exit 1
           fi
-      - name: get PR branch name from env.PR_NUMBER
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          source pr.env
-          PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
       - name: repo init
         # check who dispatched the workflow
         run: |
