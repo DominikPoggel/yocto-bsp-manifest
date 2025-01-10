@@ -29,9 +29,10 @@ jobs:
                 cd ../poky
                 git checkout scarthgap
             - name: save changes
-              run: repo manifest -r -o ieys-osm-imx8m.xml
+              run: repo manifest -r -o iesy-osm-imx8m.xml
             - name: commit changes
               run: |
-                git add ieys-osm-imx8m.xml
+                git branch -c ci-scarthgap-imx8mm
+                git add iesy-osm-imx8m.xml
                 git commit -m "update sources"
                 git push
