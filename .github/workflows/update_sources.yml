@@ -39,3 +39,10 @@ jobs:
                 git add iesy-osm-imx8m.xml
                 git commit -m "update sources"
                 git push origin ci-scarthgap-imx8mm
+            - name: create PR
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                gh auth login --with-token <<< "${GITHUB_TOKEN}"
+                gh pr create --base scarthgap --head ci-scarthgap-imx8mm --title "update sources" --body "update sources"
+
