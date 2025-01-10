@@ -3,14 +3,13 @@ name: CI test
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    branches:
-      - scarthgap
+    branches: [scarthgap]
 jobs:
   test_pr_sources:
     runs-on: self-hosted
     steps:
       - name: repo init
-        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ github.event.pull_request.headRefName }} -m iesy-osm-imx8m.xml
+        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ github.event.pull_request.head.ref }} -m iesy-osm-imx8m.xml
       - name: repo sync
         run: repo sync
       - name: run docker
