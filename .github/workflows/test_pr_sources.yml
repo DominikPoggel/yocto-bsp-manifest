@@ -23,7 +23,9 @@ jobs:
         run: |
           source pr.env
           PR_BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
-      - name: repo init # get branch name from PR env.PR_NUMBER
+      - name: repo init
+        env:
+          PR_BRANCH: ${{ steps.get_PR_branch.outputs.PR_BRANCH }}
         run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b $PR_BRANCH -m iesy-osm-imx8m.xml
       - name: repo sync
         run: repo sync
