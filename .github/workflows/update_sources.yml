@@ -1,0 +1,37 @@
+name: CI
+
+on:
+    schedule:
+        - cron: '0 0 * * *'
+    workflow_dispatch:
+jobs:
+    update_sources:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: repo init
+              run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b scarthgap -m iesy-osm-imx8m.xml
+            - name: repo sync
+              run: repo sync
+            - name: update branches
+              run: |
+                cd sources/meta-freescale
+                git checkout scarthgap
+                cd ../meta-freescale-3rdparty
+                git checkout scarthgap
+                cd ../meta-freescale-distro
+                git checkout scarthgap
+                cd ../meta-iesy-osm
+                git checkout scarthgap
+                cd ../meta-openembedded
+                git checkout scarthgap
+                cd ../poky
+                git checkout scarthgap
+            - name: save changes
+              run: repo manifest -r -o ieys-osm-imx8m.xml
+            - name: commit changes
+              run: |
+                git add ieys-osm-imx8m.xml
+                git commit -m "update sources"
+                git push
