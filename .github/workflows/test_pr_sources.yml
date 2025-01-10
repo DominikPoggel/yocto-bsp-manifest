@@ -1,15 +1,25 @@
 name: CI test
 
 on:
-  pull_request_target:
-    types: [opened, reopened, synchronize]
-    branches: [scarthgap]
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    
+permissions:
+  contents: write
 jobs:
   test_pr_sources:
     runs-on: self-hosted
     steps:
-      - name: repo init
-        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ github.event.pull_request.head.ref }} -m iesy-osm-imx8m.xml
+      - name: get PR branch name from env.PR_NUMBER
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_BRANCH=$(gh pr view ${{ env.PR_NUMBER }} --json headRefName -q .headRefName)
+          echo "::set-env name=PR_BRANCH::$PR_BRANCH"   
+      - name: repo init # get branch name from PR env.PR_NUMBER
+        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ env.PR_BRANCH }} -m iesy-osm-imx8m.xml
       - name: repo sync
         run: repo sync
       - name: run docker

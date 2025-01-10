@@ -1,47 +1,51 @@
 name: CI
 
 on:
-    schedule:
-        - cron: '0 0 * * *'
-    workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 jobs:
-    update_sources:
-        runs-on: self-hosted
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: repo init
-              run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b scarthgap -m iesy-osm-imx8m.xml
-            - name: repo sync
-              run: repo sync
-            - name: update branches
-              run: |
-                cd sources/meta-freescale
-                git checkout scarthgap
-                cd ../meta-freescale-3rdparty
-                git checkout scarthgap
-                cd ../meta-freescale-distro
-                git checkout scarthgap
-                cd ../meta-iesy-osm
-                git checkout scarthgap
-                cd ../meta-openembedded
-                git checkout scarthgap
-                cd ../poky
-                git checkout scarthgap
-            - name: save changes
-              run: repo manifest -r -o iesy-osm-imx8m.xml
-            - name: commit changes
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                git branch -c ci-scarthgap-imx8mm
-                git checkout ci-scarthgap-imx8mm
-                git add iesy-osm-imx8m.xml
-                git commit -m "update sources"
-                git push origin ci-scarthgap-imx8mm
-            - name: create PR
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                gh pr create --base scarthgap --head ci-scarthgap-imx8mm --title "update sources" --body "update sources"
-
+  update_sources:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: repo init
+        run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b scarthgap -m iesy-osm-imx8m.xml
+      - name: repo sync
+        run: repo sync
+      - name: update branches
+        run: |
+          cd sources/meta-freescale
+          git checkout scarthgap
+          cd ../meta-freescale-3rdparty
+          git checkout scarthgap
+          cd ../meta-freescale-distro
+          git checkout scarthgap
+          cd ../meta-iesy-osm
+          git checkout scarthgap
+          cd ../meta-openembedded
+          git checkout scarthgap
+          cd ../poky
+          git checkout scarthgap
+      - name: save changes
+        run: repo manifest -r -o iesy-osm-imx8m.xml
+      - name: commit changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git branch -c ci-scarthgap-imx8mm
+          git checkout ci-scarthgap-imx8mm
+          git add iesy-osm-imx8m.xml
+          git commit -m "update sources"
+          git push origin ci-scarthgap-imx8mm
+      - name: create PR
+        id: create_pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr_url=$(gh pr create --base scarthgap --head ci-scarthgap-imx8mm --title "update sources" --body "update sources")
+          pr_number=$(echo $pr_url | grep -o -E '[0-9]+$')
+          echo "::set-output name=pr_number::$pr_number"
+      - name: Set PR number as output
+        run: echo "PR_NUMBER=${{ steps.create_pr.outputs.pr_number }}" >> $GITHUB_ENV
