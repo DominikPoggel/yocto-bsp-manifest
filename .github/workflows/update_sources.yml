@@ -29,7 +29,7 @@ jobs:
           cd ../poky
           git checkout scarthgap
       - name: save changes
-        run: repo manifest -r -o iesy-osm-imx8m.xml
+        run: repo manifest -r -o iesy-osm-imx8m.xml --suppress-upstream-revision --suppress-dest-branch
       - name: commit changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
