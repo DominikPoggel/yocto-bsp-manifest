@@ -22,7 +22,7 @@ jobs:
         # check who dispatched the workflow
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ] || [ ${{ github.event_name }} == "workflow_dispatch" ]; then
-            repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ci-scarthgap-imx8mm -m iesy-osm-imx8m.xml
+            repo init -u https://github.com/dominikpoggel/yocto-bsp-manifest -b ci-scarthgap-imx8mm -m iesy-osm-imx8m.xml
           fi
         # else: dispatch by PR
       - name: repo sync
