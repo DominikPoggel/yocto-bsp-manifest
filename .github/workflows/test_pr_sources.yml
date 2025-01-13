@@ -31,6 +31,8 @@ jobs:
         run: |
           docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=iesy-imx8mm-eva-mi-v1 -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
       - name: merge PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ]; then
             gh pr merge ${{ github.event.workflow_run.head_branch }} --squash
