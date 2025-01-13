@@ -29,4 +29,9 @@ jobs:
         run: repo sync
       - name: run docker
         run: |
-          docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -it -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=iesy-imx8mm-eva-mi-v1 -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
+          docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=iesy-imx8mm-eva-mi-v1 -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
+      - name: wait for bitbake
+        run: |
+          while [ ! -f /home/build/work/build/tmp/deploy/images/iesy-imx8mm-eva-mi-v1/iesy-imx8mm-eva-mi-v1-*.rootfs.ext4 ]; do
+            sleep 60
+          done
