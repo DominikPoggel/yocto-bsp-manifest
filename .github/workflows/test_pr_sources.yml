@@ -35,5 +35,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ]; then
-            gh pr merge ${{ github.event.workflow_run.head_branch }} --squash
+            gh pr merge ci-scarthgap-imx8mm --squash
           fi
