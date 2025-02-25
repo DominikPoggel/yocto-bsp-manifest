@@ -36,6 +36,11 @@ jobs:
         run: |
           git branch -c ci-scarthgap-imx8mm
           git checkout ci-scarthgap-imx8mm
+          git diff --exit-code iesy-osm-imx8m.xml
+          if [ $? -eq 0 ]; then
+            echo "no changes"
+            exit 78
+          fi
           git add iesy-osm-imx8m.xml
           git commit -m "update sources"
           git push origin ci-scarthgap-imx8mm
