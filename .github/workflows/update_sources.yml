@@ -19,7 +19,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Skip
-        if: ${{ matrix.skip }}
+        if: ${{ matrix.skip }} == true
         run: exit 0
       - name: Checkout
         uses: actions/checkout@v2
