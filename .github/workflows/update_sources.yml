@@ -9,8 +9,7 @@ jobs:
     strategy:
       matrix:
         branch: [scarthgap]
-        machine: [iesy-osm-imx8m.xml, iesy-osm-imx93.xml]
-        skip: [false]
+        machine: [iesy-osm-imx8m.xml]
 
     runs-on: self-hosted
     steps:
@@ -19,15 +18,16 @@ jobs:
       - name: Switch to branch
         run: git checkout ${{ matrix.branch }}
       - name: repo init
-        if: ${{ matrix.skip }} != true
         run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ matrix.branch }} -m ${{ matrix.machine }}
       - name: repo sync
-        if: ${{ matrix.skip }} != true
         run: repo sync
       - name: update branches
-        if: ${{ matrix.skip }} != true
         run: |
           cd sources/meta-freescale
+          git checkout ${{ matrix.branch }}
+          cd ../meta-freescale-3rdparty
+          git checkout ${{ matrix.branch }}
+          cd ../meta-freescale-distro
           git checkout ${{ matrix.branch }}
           cd ../meta-iesy-osm
           git checkout ${{ matrix.branch }}
@@ -35,18 +35,9 @@ jobs:
           git checkout ${{ matrix.branch }}
           cd ../poky
           git checkout ${{ matrix.branch }}
-      - name: update imx8 branches
-        if: ${{ matrix.skip }} != true && ${{ matrix.machine }} == 'iesy-osm-imx8m.xml'
-        run: |
-          cd ../meta-freescale-3rdparty
-          git checkout ${{ matrix.branch }}
-          cd ../meta-freescale-distro
-          git checkout ${{ matrix.branch }}
       - name: save changes
-        if: ${{ matrix.skip }} != true
         run: repo manifest -r -o ${{ matrix.machine }} --suppress-upstream-revision --suppress-dest-branch
       - name: commit changes
-        if: ${{ matrix.skip }} != true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -61,7 +52,6 @@ jobs:
           git commit -m "update sources"
           git push origin ci-${{ matrix.branch }}-${{ matrix.machine }}
       - name: create PR
-        if: ${{ matrix.skip }} != true
         id: create_pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
