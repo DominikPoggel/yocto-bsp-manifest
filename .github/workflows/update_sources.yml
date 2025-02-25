@@ -9,7 +9,8 @@ jobs:
     strategy:
       matrix:
         branch: [kirkstone, scarthgap]
-        machine: [iesy-osm-imx8m.xml]
+        machine: [iesy-osm-imx8m.xml, iesy-osm-imx93.xml]
+        skip: [false]
         inlcude:
           - branch: kirkstone
             machine: iesy-osm-imx93.xml
@@ -17,6 +18,9 @@ jobs:
 
     runs-on: self-hosted
     steps:
+      - name: Skip
+        if: ${{ matrix.skip }}
+        run: exit 0
       - name: Checkout
         uses: actions/checkout@v2
       - name: repo init
@@ -52,7 +56,7 @@ jobs:
           fi
           git add ${{ matrix.machine }}
           git commit -m "update sources"
-          git push origin ci-${{ matrix.branch }}-${{ matrix.machine }}}}
+          git push origin ci-${{ matrix.branch }}-${{ matrix.machine }}
       - name: create PR
         id: create_pr
         env:
