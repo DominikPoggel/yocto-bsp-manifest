@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         branch: [scarthgap]
-        machine: [iesy-osm-imx8m.xml]
+        machine: [iesy-osm-imx93.xml]
 
     runs-on: self-hosted
     steps:
