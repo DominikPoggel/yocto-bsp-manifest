@@ -62,4 +62,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create --base ${{ matrix.branch }} --head ci-${{ matrix.branch }}-${{ matrix.machine }}}} --title "update sources" --body "update sources"
+          gh pr create --base ${{ matrix.branch }} --head ci-${{ matrix.branch }}-${{ matrix.machine }} --title "update sources" --body "update sources"
