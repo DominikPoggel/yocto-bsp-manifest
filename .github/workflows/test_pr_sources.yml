@@ -35,5 +35,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ]; then
-            gh pr merge ci-scarthgap-imx8mm --delete-branch
+            gh pr merge ci-scarthgap-imx8mm --delete-branch --merge
           fi
