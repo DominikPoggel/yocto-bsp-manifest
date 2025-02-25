@@ -29,15 +29,18 @@ jobs:
         run: |
           cd sources/meta-freescale
           git checkout ${{ matrix.branch }}
-          cd ../meta-freescale-3rdparty
-          git checkout ${{ matrix.branch }}
-          cd ../meta-freescale-distro
-          git checkout ${{ matrix.branch }}
           cd ../meta-iesy-osm
           git checkout ${{ matrix.branch }}
           cd ../meta-openembedded
           git checkout ${{ matrix.branch }}
           cd ../poky
+          git checkout ${{ matrix.branch }}
+      - name: update imx8 branches
+        if: ${{ matrix.skip }} != true && ${{ matrix.machine }} == 'iesy-osm-imx8m.xml'
+        run:
+          cd ../meta-freescale-3rdparty
+          git checkout ${{ matrix.branch }}
+          cd ../meta-freescale-distro
           git checkout ${{ matrix.branch }}
       - name: save changes
         if: ${{ matrix.skip }} != true
