@@ -20,11 +20,12 @@ jobs:
           fi
       - name: set env
         run: |
-          if [ ${{ github.event.workflow_run.workflow }} == "CI imx8m" ]; then
+          echo $GITHUB_WORKFLOW
+          if [ $GITHUB_WORKFLOW == "CI imx8m" ]; then
             export MACHINE=iesy-imx8mm-eva-mi-v1
             export MANIFEST=iesy-osm-imx8m.xml
             export BRANCH=ci-scarthgap-iesy-osm-imx8m.xml
-          elif [ ${{ github.event.workflow_run.workflow }} == "CI imx93" ]; then
+          elif [ $GITHUB_WORKFLOW == "CI imx93" ]; then
             export MACHINE=iesy-imx93-eva-mi
             export MANIFEST=iesy-osm-imx93.xml
             export BRANCH=ci-scarthgap-iesy-osm-imx93.xml
