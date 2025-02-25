@@ -8,13 +8,9 @@ jobs:
   update_sources:
     strategy:
       matrix:
-        branch: [kirkstone, scarthgap]
+        branch: [scarthgap]
         machine: [iesy-osm-imx8m.xml, iesy-osm-imx93.xml]
         skip: [false]
-        inlcude:
-          - branch: kirkstone
-            machine: iesy-osm-imx93.xml
-            skip: true
 
     runs-on: self-hosted
     steps:
