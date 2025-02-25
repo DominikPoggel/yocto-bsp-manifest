@@ -37,7 +37,7 @@ jobs:
           git checkout ${{ matrix.branch }}
       - name: update imx8 branches
         if: ${{ matrix.skip }} != true && ${{ matrix.machine }} == 'iesy-osm-imx8m.xml'
-        run:
+        run: |
           cd ../meta-freescale-3rdparty
           git checkout ${{ matrix.branch }}
           cd ../meta-freescale-distro
