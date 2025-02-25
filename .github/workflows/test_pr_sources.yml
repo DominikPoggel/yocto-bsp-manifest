@@ -21,19 +21,16 @@ jobs:
       - name: set env
         run: |
           echo ${{ github.event.workflow_run.name }}
-          if [ ${{ github.event.workflow_run.name }} == "CI imx8m" ]; then
+          if [[ ${{ github.event.workflow_run.name }} == "CI imx8m" ]]; then
             echo "MACHINE=iesy-imx8mm-eva-mi-v1" >> $GITHUB_ENV
             echo "MANIFEST=iesy-osm-imx8m.xml" >> $GITHUB_ENV
             echo "BRANCH=ci-scarthgap-iesy-osm-imx8m.xml" >> $GITHUB_ENV
-          elif [ ${{ github.event.workflow_run.name }} == "CI imx93" ]; then
+          elif [[ ${{ github.event.workflow_run.name }} == "CI imx93" ]]; then
             echo "MACHINE=iesy-imx93-eva-mi" >> $GITHUB_ENV
             echo "MANIFEST=iesy-osm-imx93.xml" >> $GITHUB_ENV
             echo "BRANCH=ci-scarthgap-iesy-osm-imx93.xml" >> $GITHUB_ENV
           fi
       - name: repo init
-        env:
-          BRANCH: ${{ env.BRANCH }}
-          MANIFEST: ${{ env.MANIFEST }}
         # check who dispatched the workflow
         run: |
           echo "Branch: $BRANCH"
