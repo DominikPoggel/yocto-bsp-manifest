@@ -18,16 +18,16 @@ jobs:
 
     runs-on: self-hosted
     steps:
-      - name: Skip
-        if: ${{ matrix.skip }} == true
-        run: exit 0
       - name: Checkout
         uses: actions/checkout@v2
       - name: repo init
+        if: ${{ matrix.skip }} != true
         run: repo init -u https://github.com/iesy-gmbh/yocto-bsp-manifest -b ${{ matrix.branch }} -m ${{ matrix.machine }}
       - name: repo sync
+        if: ${{ matrix.skip }} != true
         run: repo sync
       - name: update branches
+        if: ${{ matrix.skip }} != true
         run: |
           cd sources/meta-freescale
           git checkout ${{ matrix.branch }}
@@ -42,8 +42,10 @@ jobs:
           cd ../poky
           git checkout ${{ matrix.branch }}
       - name: save changes
+        if: ${{ matrix.skip }} != true
         run: repo manifest -r -o ${{ matrix.machine }} --suppress-upstream-revision --suppress-dest-branch
       - name: commit changes
+        if: ${{ matrix.skip }} != true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -58,6 +60,7 @@ jobs:
           git commit -m "update sources"
           git push origin ci-${{ matrix.branch }}-${{ matrix.machine }}
       - name: create PR
+        if: ${{ matrix.skip }} != true
         id: create_pr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
