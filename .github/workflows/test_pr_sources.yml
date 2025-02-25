@@ -2,7 +2,7 @@ name: CI test
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI imx8m", "CI imx93"]
     types: [completed]
   workflow_dispatch:
     
@@ -18,22 +18,33 @@ jobs:
             echo "CI workflow failed"
             exit 1
           fi
+      - name: set env
+        run: |
+          if [ ${{ github.event.workflow_run.workflow }} == "CI imx8m" ]; then
+            export MACHINE=iesy-imx8mm-eva-mi-v1
+            export MANIFEST=iesy-osm-imx8m.xml
+            export BRANCH=ci-scarthgap-iesy-osm-imx8m.xml
+          elif [ ${{ github.event.workflow_run.workflow }} == "CI imx93" ]; then
+            export MACHINE=iesy-imx93-eva-mi
+            export MANIFEST=iesy-osm-imx93.xml
+            export BRANCH=ci-scarthgap-iesy-osm-imx93.xml
+          fi
       - name: repo init
         # check who dispatched the workflow
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ] || [ ${{ github.event_name }} == "workflow_dispatch" ]; then
-            repo init -u https://github.com/dominikpoggel/yocto-bsp-manifest -b ci-scarthgap-imx8mm -m iesy-osm-imx8m.xml
+            repo init -u https://github.com/dominikpoggel/yocto-bsp-manifest -b $BRANCH -m $MANIFEST
           fi
         # else: dispatch by PR
       - name: repo sync
         run: repo sync
       - name: run docker
         run: |
-          docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=iesy-imx8mm-eva-mi-v1 -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
+          docker run --device=/dev/kvm:/devb/kvm --device=/dev/net/tun:/dev/net/tun --cap-add NET_ADMIN --hostname buildserver -v /tftpboot:/tftpboot -v `pwd`:/home/build/work -e MACHINE=$MACHINE -e DISTRO=iesy-wayland -e EULA=1 yoctocontainer
       - name: merge PR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ ${{ github.event_name }} == "workflow_run" ]; then
-            gh pr merge ci-scarthgap-imx8mm --delete-branch --merge
+            gh pr merge $BRANCH --delete-branch --merge
           fi
