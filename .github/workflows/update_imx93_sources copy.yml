@@ -25,10 +25,6 @@ jobs:
         run: |
           cd sources/meta-freescale
           git checkout ${{ matrix.branch }}
-          cd ../meta-freescale-3rdparty
-          git checkout ${{ matrix.branch }}
-          cd ../meta-freescale-distro
-          git checkout ${{ matrix.branch }}
           cd ../meta-iesy-osm
           git checkout ${{ matrix.branch }}
           cd ../meta-openembedded
