@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Skip
         if: ${{ matrix.skip }}
-        run: exit 78
+        run: exit 0
       - name: Checkout
         uses: actions/checkout@v2
       - name: repo init
