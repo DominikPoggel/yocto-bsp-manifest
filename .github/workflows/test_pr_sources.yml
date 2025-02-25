@@ -36,6 +36,8 @@ jobs:
           MANIFEST: ${{ env.MANIFEST }}
         # check who dispatched the workflow
         run: |
+          echo "Branch: $BRANCH"
+          echo "Manifest: $MANIFEST"
           if [ ${{ github.event_name }} == "workflow_run" ] || [ ${{ github.event_name }} == "workflow_dispatch" ]; then
             repo init -u https://github.com/dominikpoggel/yocto-bsp-manifest -b $BRANCH -m $MANIFEST
           fi
