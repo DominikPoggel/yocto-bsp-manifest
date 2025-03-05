@@ -43,8 +43,7 @@ jobs:
         run: |
           git branch -c ci-${{ matrix.branch }}-${{ matrix.machine }}
           git checkout ci-${{ matrix.branch }}-${{ matrix.machine }}
-          git diff --exit-code ${{ matrix.machine }}
-          if [ $? -eq 0 ]; then
+          if git diff --quiet ${{ matrix.machine }}; then
             echo "no changes"
             exit 78
           fi
